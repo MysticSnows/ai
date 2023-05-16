@@ -1,0 +1,54 @@
+# Graph coloring problem
+# Adjacency Matrix
+G = [[0, 1, 1, 0, 1, 0],
+     [1, 0, 1, 1, 0, 1],
+     [1, 1, 0, 1, 1, 0],
+     [0, 1, 1, 0, 0, 1],
+     [1, 0, 1, 0, 0, 1],
+     [0, 1, 0, 1, 1, 0]]
+
+# Initiate the name of nodes
+nodes = "abcdef"
+t_ = {}
+for i in range(len(G)):
+    t_[nodes[i]] = i
+
+# Count degree of all nodes
+degree = []
+for i in range(len(G)):
+    degree.append(sum(G[i]))
+
+# Initiate the possible colors
+colorDict = {}
+for i in range(len(G)):
+    colorDict[nodes[i]] = ["Blue", "Red", "Yellow", "Green"]
+
+# Sort the nodes based on the degree
+sortedNodes = []
+indices = []
+
+# Use selection sort
+for i in range(len(degree)):
+    _max = 0
+    idx = 0
+    for j in range(len(degree)):
+        if j not in indices:
+            if degree[j] > _max:
+                _max = degree[j]
+                idx = j
+    indices.append(idx)
+    sortedNodes.append(nodes[idx])
+
+# The main process
+theSolution = {}
+for n in sortedNodes:
+    setTheColor = colorDict[n]
+    theSolution[n] = setTheColor[0]
+    adjacentNode = G[t_[n]]
+    for j in range(len(adjacentNode)):
+        if adjacentNode[j] == 1 and (setTheColor[0] in colorDict[nodes[j]]):
+            colorDict[nodes[j]].remove(setTheColor[0])
+
+# Print the solution
+for t, w in sorted(theSolution.items()):
+    print("Node", t, " = ", w)
